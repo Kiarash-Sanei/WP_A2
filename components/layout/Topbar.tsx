@@ -15,11 +15,7 @@ export function TopBar() {
   return (
     <header className="flex items-center justify-between p-4">
       <a>POSTMAN</a>
-      {mounted && (
-        <button onClick={toggleTheme}>
-          {isDark ? "☀️" : "🌙"}
-        </button>
-      )}
+      {mounted && <button onClick={toggleTheme}>{isDark ? "☀️" : "🌙"}</button>}
     </header>
   );
 }

@@ -7,15 +7,21 @@ export function TabBar() {
 
   return (
     <div className="flex items-center">
-      {tabs.map(tab => (
-        <div key={tab.id} onClick={() => setActiveTab(tab.id)} className={tab.id === activeTabId ? "bg-blue-500" : "bg-gray-200"}>
-            {tab.name}
-            <button onClick={(e) => {
-                e.stopPropagation();
-                closeTab(tab.id);
-            }}>
-                ×
-            </button>
+      {tabs.map((tab) => (
+        <div
+          key={tab.id}
+          onClick={() => setActiveTab(tab.id)}
+          className={tab.id === activeTabId ? "bg-blue-500" : "bg-gray-200"}
+        >
+          {tab.name}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              closeTab(tab.id);
+            }}
+          >
+            ×
+          </button>
         </div>
       ))}
       <button onClick={() => addTab()}>+</button>
