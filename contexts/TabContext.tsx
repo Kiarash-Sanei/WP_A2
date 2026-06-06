@@ -9,6 +9,7 @@ type TabContextType = {
   closeTab: (id: string) => void;
   setActiveTab: (id: string) => void;
   updateTab: (id: string, updates: Partial<Tab>) => void;
+  clearTab: (id: string) => void;
 };
 
 const TabContext = createContext<TabContextType | null>(null);
@@ -56,6 +57,17 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
     );
   };
 
+  const clearTab = (id: string) => {
+    updateTab(id, {
+      url: "",
+      method: "GET",
+      params: [],
+      headers: [],
+      body: "",
+      response: null,
+    });
+  };
+
   useEffect(() => {
     if (tabs.length === 0) {
       addTab();
@@ -64,7 +76,15 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <TabContext.Provider
-      value={{ tabs, activeTabId, addTab, closeTab, setActiveTab, updateTab }}
+      value={{
+        tabs,
+        activeTabId,
+        addTab,
+        closeTab,
+        setActiveTab,
+        updateTab,
+        clearTab,
+      }}
     >
       {children}
     </TabContext.Provider>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 
 export function UrlBar() {
-  const { tabs, activeTabId, updateTab } = useTab();
+  const { tabs, activeTabId, updateTab, clearTab } = useTab();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -75,6 +75,7 @@ export function UrlBar() {
             }
           />
           <button onClick={handleSend}>Send</button>
+          <button onClick={() => clearTab(activeTabId)}>Clear</button>
           {error && <p className="text-red-500">{error}</p>}
         </div>
       ) : null}
