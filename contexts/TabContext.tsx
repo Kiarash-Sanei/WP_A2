@@ -1,6 +1,6 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { Tab } from "@/types/tabs";
-import { createContext, useContext } from "react";
+import { createContext, useCallback, useContext, useEffect } from "react";
 
 type TabContextType = {
     tabs: Tab[];
@@ -17,7 +17,7 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
     const [tabs, setTabs] = useLocalStorage<Tab[]>("tabs", []);
     const [activeTabId, setActiveTabId] = useLocalStorage<string>("activeTabId", "");
 
-    const addTab = () => {
+    const addTab = useCallback(() => {
         const newTab: Tab = {
             id: crypto.randomUUID(),
             name: "New Request",
@@ -30,7 +30,8 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
         };
         setTabs([...tabs, newTab]);
         setActiveTabId(newTab.id);
-    };
+    }, [tabs, setTabs, setActiveTabId]);
+
     const closeTab = (id: string) => {
         if (activeTabId === id) {
             const index = tabs.findIndex(tab => tab.id === id);
@@ -50,6 +51,12 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
         }));
     };
 
+    useEffect(() => {
+        if (tabs.length === 0) {
+            addTab();
+        }
+    }, [addTab]); 
+    
     return (
         <TabContext.Provider value={{ tabs, activeTabId, addTab, closeTab, setActiveTab, updateTab }}>
         {children}

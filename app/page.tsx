@@ -1,5 +1,6 @@
 import { MainPanel } from "@/components/layout/MainPanel";
 import { Sidebar } from "@/components/layout/Sidebar";
+import { TabBar } from "@/components/layout/TapBar";
 import { TopBar } from "@/components/layout/Topbar";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <Sidebar />
       <div className="flex flex-col flex-1">
         <TopBar />
+        <TabBar />
         <MainPanel />
       </div>
     </div>
