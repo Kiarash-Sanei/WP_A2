@@ -17,5 +17,6 @@ export type Tab = {
     method: string;
     params: KeyValue[];
     headers: KeyValue[];
+    body: string;
     response: Response | null;
 };
