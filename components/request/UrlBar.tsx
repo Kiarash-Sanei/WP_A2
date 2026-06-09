@@ -7,7 +7,8 @@ import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { useHistory } from "@/contexts/HistoryContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { Box, TextField, Select, MenuItem, Button, Alert } from "@mui/material";
-import { Send, Clear } from "@mui/icons-material";
+import { Send, Clear, Save } from "@mui/icons-material";
+import { useCollection } from "@/contexts/CollectionContext";
 
 export function UrlBar() {
   const { tabs, activeTabId, updateTab, clearTab } = useTab();
@@ -16,6 +17,9 @@ export function UrlBar() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { addToHistory } = useHistory();
   const mounted = useHasMounted();
+  const { collections, saveRequest } = useCollection();
+  const [collectionId, setCollectionId] = useState("");
+  const selectedCollectionId = collectionId || collections[0]?.id || "";
 
   const isValidUrl = (url: string): boolean => {
     return url.startsWith("http://") || url.startsWith("https://");
@@ -66,6 +70,19 @@ export function UrlBar() {
     }
   };
 
+  const handleSave = (collectionId: string) => {
+    if (!activeTab || !collectionId) return;
+    saveRequest(collectionId, {
+      id: crypto.randomUUID(),
+      name: activeTab.name,
+      url: activeTab.url,
+      method: activeTab.method,
+      params: activeTab.params,
+      headers: activeTab.headers,
+      body: activeTab.body,
+    });
+  };
+
   if (!mounted) {
     return <div className="flex items-center" />;
   }
@@ -78,8 +95,8 @@ export function UrlBar() {
             <Select
               size="small"
               value={activeTab.method}
-              onChange={(e) =>
-                updateTab(activeTabId, { method: e.target.value as string })
+              onChange={(event) =>
+                updateTab(activeTabId, { method: event.target.value as string })
               }
               sx={{ minWidth: 90 }}
             >
@@ -107,6 +124,7 @@ export function UrlBar() {
                 isLoading ? <LoadingSpinner isLoading={true} /> : <Send />
               }
               disabled={isLoading}
+              sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
             >
               {isLoading ? "Sending..." : "Send"}
             </Button>
@@ -115,9 +133,34 @@ export function UrlBar() {
               variant="outlined"
               onClick={() => clearTab(activeTabId)}
               startIcon={<Clear />}
+              sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
             >
               Clear
             </Button>
+            <Button
+              variant="outlined"
+              onClick={() => handleSave(selectedCollectionId)}
+              startIcon={<Save />}
+              sx={{ whiteSpace: "nowrap", minWidth: "auto" }}
+            >
+              Save
+            </Button>
+            <Select
+              size="small"
+              value={selectedCollectionId}
+              onChange={(event) => setCollectionId(event.target.value)}
+              sx={{ minWidth: 90 }}
+            >
+              {collections.length === 0 ? (
+                <MenuItem disabled>No collections yet</MenuItem>
+              ) : (
+                collections.map((collection) => (
+                  <MenuItem key={collection.id} value={collection.id}>
+                    {collection.name}
+                  </MenuItem>
+                ))
+              )}
+            </Select>
           </Box>
 
           {error && (
