@@ -6,6 +6,8 @@ import { useState } from "react";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { useHistory } from "@/contexts/HistoryContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { Box, TextField, Select, MenuItem, Button, Alert } from "@mui/material";
+import { Send, Clear } from "@mui/icons-material";
 
 export function UrlBar() {
   const { tabs, activeTabId, updateTab, clearTab } = useTab();
@@ -71,30 +73,53 @@ export function UrlBar() {
   return (
     <>
       {activeTab ? (
-        <div className="flex items-center">
-          <LoadingSpinner isLoading={isLoading} />
-          <select
-            value={activeTab?.method}
-            onChange={(value) =>
-              updateTab(activeTabId, { method: value.target.value })
-            }
-          >
-            {METHODS.map((method) => (
-              <option key={method} value={method}>
-                {method}
-              </option>
-            ))}
-          </select>
-          <input
-            value={activeTab?.url}
-            onChange={(value) =>
-              updateTab(activeTabId, { url: value.target.value })
-            }
-          />
-          <button onClick={handleSend}>Send</button>
-          <button onClick={() => clearTab(activeTabId)}>Clear</button>
-          {error && <p className="text-red-500">{error}</p>}
-        </div>
+        <>
+          <Box sx={{ display: "flex", gap: 1, p: 2, alignItems: "center" }}>
+            <Select
+              size="small"
+              value={activeTab.method}
+              onChange={(event) =>
+                updateTab(activeTabId, { method: event.target.value as string })
+              }
+            >
+              {METHODS.map((method) => (
+                <MenuItem key={method} value={method}>
+                  {method}
+                </MenuItem>
+              ))}
+            </Select>
+
+            <TextField
+              size="small"
+              fullWidth
+              placeholder="https://api.example.com"
+              value={activeTab.url}
+              onChange={(event) =>
+                updateTab(activeTabId, { url: event.target.value })
+              }
+            />
+
+            <Button
+              variant="contained"
+              onClick={handleSend}
+              startIcon={
+                isLoading ? <LoadingSpinner isLoading={isLoading} /> : <Send />
+              }
+              disabled={isLoading}
+            >
+              {isLoading ? "Sending..." : "Send"}
+            </Button>
+
+            <Button
+              variant="outlined"
+              onClick={() => clearTab(activeTabId)}
+              startIcon={<Clear />}
+            >
+              Clear
+            </Button>
+          </Box>
+          {error && <Alert severity="error">{error}</Alert>}
+        </>
       ) : null}
     </>
   );
