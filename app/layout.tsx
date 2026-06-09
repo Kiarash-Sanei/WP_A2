@@ -5,6 +5,9 @@ import { Providers } from "@/components/layout/Providers";
 export const metadata: Metadata = {
   title: "POSTMAN",
   description: "Clone of real postman",
+  icons: {
+    icon: "./icon.svg",
+  },
 };
 
 export default function RootLayout({
