@@ -73,14 +73,15 @@ export function UrlBar() {
   return (
     <>
       {activeTab ? (
-        <>
-          <Box sx={{ display: "flex", gap: 1, p: 2, alignItems: "center" }}>
+        <Box sx={{ p: 1 }}>
+          <Box sx={{ display: "flex", gap: 1, mb: 1 }}>
             <Select
               size="small"
               value={activeTab.method}
-              onChange={(event) =>
-                updateTab(activeTabId, { method: event.target.value as string })
+              onChange={(e) =>
+                updateTab(activeTabId, { method: e.target.value as string })
               }
+              sx={{ minWidth: 90 }}
             >
               {METHODS.map((method) => (
                 <MenuItem key={method} value={method}>
@@ -88,29 +89,29 @@ export function UrlBar() {
                 </MenuItem>
               ))}
             </Select>
-
             <TextField
               size="small"
               fullWidth
               placeholder="https://api.example.com"
               value={activeTab.url}
-              onChange={(event) =>
-                updateTab(activeTabId, { url: event.target.value })
-              }
+              onChange={(e) => updateTab(activeTabId, { url: e.target.value })}
             />
+          </Box>
 
+          <Box sx={{ display: "flex", gap: 1 }}>
             <Button
+              fullWidth
               variant="contained"
               onClick={handleSend}
               startIcon={
-                isLoading ? <LoadingSpinner isLoading={isLoading} /> : <Send />
+                isLoading ? <LoadingSpinner isLoading={true} /> : <Send />
               }
               disabled={isLoading}
             >
               {isLoading ? "Sending..." : "Send"}
             </Button>
-
             <Button
+              fullWidth
               variant="outlined"
               onClick={() => clearTab(activeTabId)}
               startIcon={<Clear />}
@@ -118,8 +119,13 @@ export function UrlBar() {
               Clear
             </Button>
           </Box>
-          {error && <Alert severity="error">{error}</Alert>}
-        </>
+
+          {error && (
+            <Alert severity="error" sx={{ mt: 1 }}>
+              {error}
+            </Alert>
+          )}
+        </Box>
       ) : null}
     </>
   );

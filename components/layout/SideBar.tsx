@@ -14,6 +14,8 @@ import {
   Divider,
   Stack,
   Chip,
+  useMediaQuery,
+  Drawer,
 } from "@mui/material";
 import {
   Delete,
@@ -24,7 +26,12 @@ import {
 } from "@mui/icons-material";
 import { SavedRequest } from "@/types/tabs";
 
-export function SideBar() {
+type SideBarProps = {
+  open: boolean;
+  onClose: () => void;
+};
+
+export function SideBar({ open, onClose }: SideBarProps) {
   const {
     collections,
     addCollection,
@@ -37,20 +44,11 @@ export function SideBar() {
   const { updateTab, activeTabId } = useTab();
   const [newName, setNewName] = useState("");
   const mounted = useHasMounted();
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   if (!mounted) return null;
 
-  const loadRequest = (request: SavedRequest) => {
-    updateTab(activeTabId, {
-      url: request.url,
-      method: request.method,
-      params: request.params,
-      headers: request.headers,
-      body: request.body,
-    });
-  };
-
-  return (
+  const sidebarContent = (
     <Box
       sx={{
         width: 260,
@@ -222,4 +220,24 @@ export function SideBar() {
       </Box>
     </Box>
   );
+
+  const loadRequest = (request: SavedRequest) => {
+    updateTab(activeTabId, {
+      url: request.url,
+      method: request.method,
+      params: request.params,
+      headers: request.headers,
+      body: request.body,
+    });
+  };
+
+  if (isMobile) {
+    return (
+      <Drawer open={open} onClose={onClose}>
+        {sidebarContent}
+      </Drawer>
+    );
+  }
+
+  return sidebarContent;
 }

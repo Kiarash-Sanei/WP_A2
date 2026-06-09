@@ -4,8 +4,13 @@ import { useTheme } from "@/contexts/ThemeContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
 import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { DarkMode, LightMode } from "@mui/icons-material";
+import { Menu } from "@mui/icons-material";
 
-export function TopBar() {
+type TopBarProps = {
+  onMenuClick: () => void;
+};
+
+export function TopBar({ onMenuClick }: TopBarProps) {
   const { isDark, toggleTheme } = useTheme();
   const mounted = useHasMounted();
 
@@ -14,12 +19,18 @@ export function TopBar() {
   return (
     <AppBar position="static">
       <Toolbar sx={{ justifyContent: "space-between" }}>
+        <IconButton
+          onClick={onMenuClick}
+          sx={{ display: { md: "none" }, color: "inherit" }}
+        >
+          <Menu />
+        </IconButton>
+
         <Typography>POSTMAN</Typography>
-        {mounted && (
-          <IconButton onClick={toggleTheme}>
-            {isDark ? <LightMode /> : <DarkMode />}
-          </IconButton>
-        )}
+
+        <IconButton onClick={toggleTheme} color="inherit">
+          {isDark ? <LightMode /> : <DarkMode />}
+        </IconButton>
       </Toolbar>
     </AppBar>
   );
