@@ -4,6 +4,7 @@ import { useTab } from "@/contexts/TabContext";
 import { useState } from "react";
 import { KeyValueEditor } from "./KeyValueEditor";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { Box, Tabs, Tab, TextField } from "@mui/material";
 
 type Section = "params" | "headers" | "body";
 
@@ -17,21 +18,17 @@ export function RequestTabs() {
   if (!activeTab) return null;
 
   return (
-    <div>
-      <button onClick={() => setActiveSection("params")}>Params</button>
-      <div>
-        {(["params", "headers", "body"] as Section[]).map((section) => (
-          <button
-            key={section}
-            onClick={() => setActiveSection(section)}
-            className={
-              activeSection === section ? "bg-blue-500" : "bg-gray-200"
-            }
-          >
-            {section.charAt(0).toUpperCase() + section.slice(1)}
-          </button>
-        ))}
-      </div>
+    <Box sx={{ p: 1 }}>
+      <Tabs
+        value={activeSection}
+        onChange={(_, value) => setActiveSection(value as Section)}
+        sx={{ borderBottom: 1, borderColor: "divider", mb: 1 }}
+      >
+        <Tab label="Params" value="params" />
+        <Tab label="Headers" value="headers" />
+        <Tab label="Body" value="body" />
+      </Tabs>
+
       {activeSection === "params" && (
         <KeyValueEditor
           items={activeTab.params}
@@ -45,13 +42,15 @@ export function RequestTabs() {
         />
       )}
       {activeSection === "body" && (
-        <textarea
+        <TextField
+          multiline
+          rows={6}
+          fullWidth
+          placeholder='{"key": "value"}'
           value={activeTab.body}
-          onChange={(event) =>
-            updateTab(activeTabId, { body: event.target.value })
-          }
+          onChange={(e) => updateTab(activeTabId, { body: e.target.value })}
         />
       )}
-    </div>
+    </Box>
   );
 }
