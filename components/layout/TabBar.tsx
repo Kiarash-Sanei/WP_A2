@@ -2,39 +2,40 @@
 
 import { useTab } from "@/contexts/TabContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { Box, Tabs, Tab, IconButton } from "@mui/material";
+import { Close, Add } from "@mui/icons-material";
 
 export function TabBar() {
   const { tabs, activeTabId, addTab, closeTab, setActiveTab } = useTab();
   const mounted = useHasMounted();
 
-  if (!mounted) {
-    return (
-      <div className="flex items-center">
-        <button onClick={() => addTab()}>+</button>
-      </div>
-    );
-  }
+  if (!mounted) return null;
 
   return (
-    <div className="flex items-center">
-      {tabs.map((tab) => (
-        <div
-          key={tab.id}
-          onClick={() => setActiveTab(tab.id)}
-          className={tab.id === activeTabId ? "bg-blue-500" : "bg-gray-200"}
-        >
-          {tab.name}
-          <button
-            onClick={(event) => {
-              event.stopPropagation();
-              closeTab(tab.id);
-            }}
-          >
-            ×
-          </button>
-        </div>
-      ))}
-      <button onClick={() => addTab()}>+</button>
-    </div>
+    <Box sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}>
+      <Tabs value={activeTabId} onChange={(_, value) => setActiveTab(value)}>
+        {tabs.map((tab) => (
+          <Tab
+            key={tab.id}
+            value={tab.id}
+            label={
+              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                {tab.name}
+                <Close
+                  fontSize="small"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    closeTab(tab.id);
+                  }}
+                />
+              </Box>
+            }
+          />
+        ))}
+      </Tabs>
+      <IconButton onClick={addTab} size="small">
+        <Add />
+      </IconButton>
+    </Box>
   );
 }

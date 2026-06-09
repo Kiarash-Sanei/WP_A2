@@ -9,6 +9,8 @@ export function TopBar() {
   const { isDark, toggleTheme } = useTheme();
   const mounted = useHasMounted();
 
+  if (!mounted) return null;
+
   return (
     <AppBar position="static">
       <Toolbar sx={{ justifyContent: "space-between" }}>
