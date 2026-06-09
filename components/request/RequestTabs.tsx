@@ -3,6 +3,7 @@
 import { useTab } from "@/contexts/TabContext";
 import { useState } from "react";
 import { KeyValueEditor } from "./KeyValueEditor";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 type Section = "params" | "headers" | "body";
 
@@ -10,7 +11,9 @@ export function RequestTabs() {
   const [activeSection, setActiveSection] = useState<Section>("params");
   const { tabs, activeTabId, updateTab } = useTab();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
+  const mounted = useHasMounted();
 
+  if (!mounted) return null;
   if (!activeTab) return null;
 
   return (

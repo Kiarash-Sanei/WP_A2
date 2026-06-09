@@ -1,9 +1,19 @@
 "use client";
 
 import { useTab } from "@/contexts/TabContext";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 export function TabBar() {
   const { tabs, activeTabId, addTab, closeTab, setActiveTab } = useTab();
+  const mounted = useHasMounted();
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center">
+        <button onClick={() => addTab()}>+</button>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center">

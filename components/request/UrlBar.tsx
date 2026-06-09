@@ -5,6 +5,7 @@ import { useTab } from "@/contexts/TabContext";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
 import { useHistory } from "@/contexts/HistoryContext";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 export function UrlBar() {
   const { tabs, activeTabId, updateTab, clearTab } = useTab();
@@ -12,6 +13,7 @@ export function UrlBar() {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { addToHistory } = useHistory();
+  const mounted = useHasMounted();
 
   const isValidUrl = (url: string): boolean => {
     return url.startsWith("http://") || url.startsWith("https://");
@@ -61,6 +63,10 @@ export function UrlBar() {
       setIsLoading(false);
     }
   };
+
+  if (!mounted) {
+    return <div className="flex items-center" />;
+  }
 
   return (
     <>

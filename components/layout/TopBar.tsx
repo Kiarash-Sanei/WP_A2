@@ -1,16 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useHasMounted } from "@/hooks/useHasMounted";
 
 export function TopBar() {
   const { isDark, toggleTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
 
   return (
     <header className="flex items-center justify-between p-4">

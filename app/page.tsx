@@ -1,7 +1,7 @@
 import { MainPanel } from "@/components/layout/MainPanel";
 import { Sidebar } from "@/components/layout/Sidebar";
 import { TabBar } from "@/components/layout/TabBar";
-import { TopBar } from "@/components/layout/Topbar";
+import { TopBar } from "@/components/layout/TopBar";
 
 export default function Home() {
   return (
