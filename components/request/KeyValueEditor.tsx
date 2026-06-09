@@ -1,6 +1,15 @@
 "use client";
 
 import { KeyValue } from "@/types/tabs";
+import {
+  Box,
+  Checkbox,
+  TextField,
+  IconButton,
+  Button,
+  Stack,
+} from "@mui/material";
+import { Delete, Add } from "@mui/icons-material";
 
 type KeyValueEditorProps = {
   items: KeyValue[];
@@ -37,26 +46,39 @@ export function KeyValueEditor({ items, onChange }: KeyValueEditorProps) {
   };
 
   return (
-    <div>
+    <Box sx={{ p: 1 }}>
       {items.map((item) => (
-        <div key={item.id}>
-          <input
-            type="checkbox"
+        <Stack
+          key={item.id}
+          direction="row"
+          spacing={1}
+          sx={{ mb: 1, alignItems: "center" }}
+        >
+          <Checkbox
             checked={item.enabled}
             onChange={(e) => updateRow(item.id, "enabled", e.target.checked)}
+            size="small"
           />
-          <input
+          <TextField
+            size="small"
+            placeholder="Key"
             value={item.key}
             onChange={(e) => updateRow(item.id, "key", e.target.value)}
           />
-          <input
+          <TextField
+            size="small"
+            placeholder="Value"
             value={item.value}
             onChange={(e) => updateRow(item.id, "value", e.target.value)}
           />
-          <button onClick={() => removeRow(item.id)}>×</button>
-        </div>
+          <IconButton size="small" onClick={() => removeRow(item.id)}>
+            <Delete fontSize="small" />
+          </IconButton>
+        </Stack>
       ))}
-      <button onClick={addRow}>+ Add Row</button>
-    </div>
+      <Button startIcon={<Add />} size="small" onClick={addRow}>
+        Add Row
+      </Button>
+    </Box>
   );
 }
