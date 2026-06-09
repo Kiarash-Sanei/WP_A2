@@ -1,18 +1,20 @@
 "use client";
 
 import { useTab } from "@/contexts/TabContext";
+import { useHasMounted } from "@/hooks/useHasMounted";
+import { Chip, Paper } from "@mui/material";
 
-const getStatusColor = (status: number): string => {
+const getStatusColor = (status: number) => {
   if (status >= 200 && status < 300) {
-    return "text-green-500";
+    return "success";
   }
   if (status >= 400 && status < 500) {
-    return "text-yellow-500";
+    return "warning";
   }
   if (status >= 500) {
-    return "text-red-500";
+    return "error";
   }
-  return "text-gray-500";
+  return "default";
 };
 
 const formatBody = (body: string): string => {
@@ -26,15 +28,26 @@ const formatBody = (body: string): string => {
 export function ResponseViewer() {
   const { tabs, activeTabId } = useTab();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
-
-  if (!activeTab?.response) return <div>No response yet</div>;
+  const mounted = useHasMounted();
+  if (!mounted) return null;
 
   return (
-    <div>
-      <div className={getStatusColor(activeTab.response.status)}>
-        {activeTab.response.status}
-      </div>
-      <pre>{formatBody(activeTab.response.body)}</pre>
-    </div>
+    <Paper
+      variant="outlined"
+      sx={{ p: 2, mt: 1, overflow: "auto", maxHeight: 400 }}
+    >
+      {activeTab?.response && (
+        <Chip
+          label={`Status: ${activeTab.response.status}`}
+          color={getStatusColor(activeTab.response.status)}
+          sx={{ mb: 1 }}
+        />
+      )}
+      <pre style={{ margin: 0 }}>
+        {!activeTab?.response
+          ? "No response yet"
+          : formatBody(activeTab.response.body)}
+      </pre>
+    </Paper>
   );
 }
