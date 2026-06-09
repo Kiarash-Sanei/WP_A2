@@ -37,6 +37,16 @@ export function CollectionProvider({
   };
 
   const saveRequest = (collectionId: string, request: SavedRequest) => {
+    const collection = collections.find(
+      (collection) => collection.id === collectionId,
+    );
+
+    const isDuplicate = collection?.requests.some(
+      (r) => r.url === request.url && r.method === request.method,
+    );
+
+    if (isDuplicate) return;
+
     setCollections(
       collections.map((collection) =>
         collection.id === collectionId
