@@ -10,20 +10,22 @@
 
 ## ✨ Features
 
-| Feature                  | Description                                                                    |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| 🗂️ **Multi-tab**         | Manage multiple requests simultaneously, rename tabs with double-click         |
-| 🌐 **HTTP Methods**      | Full support for GET, POST, PUT, PATCH, DELETE                                 |
-| ✅ **URL Validation**    | Validates `http://` and `https://` before sending                              |
-| 🔧 **Params & Headers**  | Add, edit, and toggle key-value pairs for params and headers                   |
-| 📝 **Body Editor**       | Raw and JSON body support with multiline editor                                |
-| 📊 **Response Viewer**   | Color-coded status codes with pretty-printed JSON                              |
-| ⚠️ **Error Handling**    | Network errors and invalid input feedback via alerts                           |
-| 🗑️ **Clear Fields**      | Reset all tab fields instantly                                                 |
-| 📁 **Collections**       | Save requests to named collections, export/import as JSON, duplicate detection |
-| 🕐 **Request History**   | Auto-saved history, click to open in new tab                                   |
-| 🌙 **Dark Mode**         | Toggle between light and dark themes, persisted across sessions                |
-| 📱 **Responsive Design** | Mobile-friendly with collapsible sidebar drawer                                |
+| Feature                   | Description                                                                    |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| 🗂️ **Multi-tab**          | Manage multiple requests simultaneously, rename tabs with double-click         |
+| 🌐 **HTTP Methods**       | Full support for GET, POST, PUT, PATCH, DELETE                                 |
+| ✅ **URL Validation**     | Validates `http://` and `https://` before sending                              |
+| 🔧 **Params & Headers**   | Add, edit, and toggle key-value pairs for params and headers                   |
+| 📝 **Body Editor**        | Raw and JSON body support with multiline editor                                |
+| 📊 **Response Viewer**    | Color-coded status codes with pretty-printed JSON                              |
+| ⚠️ **Error Handling**     | Network errors and invalid input feedback via alerts                           |
+| 🗑️ **Clear Fields**       | Reset all tab fields instantly                                                 |
+| 📁 **Collections**        | Save requests to named collections, export/import as JSON, duplicate detection |
+| 💾 **Save to Collection** | Save any request directly to a chosen collection from the URL bar              |
+| 🕐 **Request History**    | Auto-saved history, click to open in a new tab                                 |
+| ✏️ **Rename Tabs**        | Double-click any tab name to rename it inline                                  |
+| 🌙 **Dark Mode**          | Toggle between light and dark themes, persisted across sessions                |
+| 📱 **Responsive Design**  | Mobile-friendly with collapsible sidebar drawer                                |
 
 ---
 
@@ -41,15 +43,15 @@
 
 ```
 ├── app/
-│   ├── layout.tsx          # Root layout with Providers and metadata
-│   └── page.tsx            # Main page with sidebar + main panel
+│   ├── layout.tsx               # Root layout with Providers and metadata
+│   └── page.tsx                 # Main page with sidebar + main panel
 ├── components/
 │   ├── layout/
-│   │   ├── MainPanel.tsx   # Main content area
-│   │   ├── Providers.tsx   # All context providers
-│   │   ├── Sidebar.tsx     # Collections, history, import/export
-│   │   ├── TabBar.tsx      # Tab management with rename support
-│   │   └── TopBar.tsx      # App bar with theme toggle
+│   │   ├── MainPanel.tsx        # Main content area
+│   │   ├── Providers.tsx        # All context providers
+│   │   ├── Sidebar.tsx          # Collections, history, import/export
+│   │   ├── TabBar.tsx           # Tab management with rename support
+│   │   └── TopBar.tsx           # App bar with theme toggle
 │   ├── request/
 │   │   ├── KeyValueEditor.tsx   # Reusable key-value pair editor
 │   │   ├── RequestTabs.tsx      # Params / Headers / Body switcher
@@ -58,17 +60,17 @@
 │   └── ui/
 │       └── LoadingSpinner.tsx   # Animated loading indicator
 ├── constants/
-│   └── methods.ts          # HTTP method list
+│   └── methods.ts               # HTTP method list
 ├── contexts/
 │   ├── CollectionContext.tsx    # Collections CRUD + import/export
 │   ├── HistoryContext.tsx       # Request history management
 │   ├── TabContext.tsx           # Tab state and operations
 │   └── ThemeContext.tsx         # Dark/light mode toggle
 ├── hooks/
-│   ├── useHasMounted.ts    # SSR-safe hydration hook
-│   └── useLocalStorage.ts  # Generic localStorage state hook
+│   ├── useHasMounted.ts         # SSR-safe hydration hook
+│   └── useLocalStorage.ts      # Generic localStorage state hook
 └── types/
-    └── tabs.ts             # Shared TypeScript types
+    └── tabs.ts                  # Shared TypeScript types
 ```
 
 ---
@@ -112,8 +114,8 @@ npm start
 ### Managing Collections
 
 1. Enter a collection name in the sidebar and click **+**
-2. Build and send a request, then click **Save** to add it to a collection
-3. Click a saved request to load it into the active tab
+2. Build and send a request, then select a collection and click **Save**
+3. Click any saved request to load it into the active tab
 4. Click **↓** to export a collection as JSON
 5. Click **Import Collection** to restore from a JSON file
 
@@ -130,18 +132,23 @@ npm start
 
 ## 🌿 Branch Strategy
 
-| Branch                    | Feature                                 |
-| ------------------------- | --------------------------------------- |
-| `feature/ui-layout`       | App shell, dark mode, loading spinner   |
-| `feature/multi-tab`       | Tab management with localStorage        |
-| `feature/method-url`      | Method selector, URL bar, HTTP requests |
-| `feature/params-headers`  | Key-value editor for params and headers |
-| `feature/response-viewer` | Status code display and response body   |
-| `feature/clear-fields`    | Reset all tab fields                    |
-| `feature/collections-io`  | Collections with import/export          |
-| `feature/history`         | Request history with localStorage       |
-| `feat/improve-ui`         | MUI redesign for all components         |
-| `feat/responsive-design`  | Mobile-friendly layout with Drawer      |
+Each feature was developed in a dedicated branch and merged into `main`:
+
+| Branch                            | Feature                                               |
+| --------------------------------- | ----------------------------------------------------- |
+| `feat/ui-layout`                  | App shell, dark mode, loading spinner                 |
+| `feat/multi-tab`                  | Tab management with localStorage                      |
+| `feat/mount`                      | SSR-safe `useHasMounted` hook to fix hydration errors |
+| `feat/method-url`                 | Method selector, URL bar, HTTP requests               |
+| `feat/params-headers`             | Key-value editor for params and headers               |
+| `feat/response-viewer`            | Status code display and formatted response body       |
+| `feat/clear-fields`               | Reset all tab fields at once                          |
+| `feat/collections-io`             | Collections with import/export                        |
+| `feat/history`                    | Auto-saved request history                            |
+| `feat/save-request-to-collection` | Save requests to collections from URL bar             |
+| `feat/rename-tab`                 | Inline tab renaming with double-click                 |
+| `feat/improve-ui`                 | MUI redesign for all components                       |
+| `feat/responsive-design`          | Mobile-friendly layout with collapsible drawer        |
 
 ---
 
