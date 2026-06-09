@@ -2,15 +2,23 @@
 
 import { useTheme } from "@/contexts/ThemeContext";
 import { useHasMounted } from "@/hooks/useHasMounted";
+import { AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import { DarkMode, LightMode } from "@mui/icons-material";
 
 export function TopBar() {
   const { isDark, toggleTheme } = useTheme();
   const mounted = useHasMounted();
 
   return (
-    <header className="flex items-center justify-between p-4">
-      <a>POSTMAN</a>
-      {mounted && <button onClick={toggleTheme}>{isDark ? "☀️" : "🌙"}</button>}
-    </header>
+    <AppBar position="static">
+      <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Typography>POSTMAN</Typography>
+        {mounted && (
+          <IconButton onClick={toggleTheme}>
+            {isDark ? <LightMode /> : <DarkMode />}
+          </IconButton>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }
