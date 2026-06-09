@@ -15,8 +15,8 @@ export function TabBar() {
         >
           {tab.name}
           <button
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={(event) => {
+              event.stopPropagation();
               closeTab(tab.id);
             }}
           >
