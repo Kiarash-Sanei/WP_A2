@@ -50,7 +50,7 @@ export function UrlBar() {
       });
       addToHistory({
         id: crypto.randomUUID(),
-        name: activeTab.url,
+        name: activeTab.name,
         url: activeTab.url,
         method: activeTab.method,
         params: activeTab.params,

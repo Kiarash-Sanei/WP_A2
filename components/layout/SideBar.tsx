@@ -185,7 +185,7 @@ export function SideBar({ open, onClose }: SideBarProps) {
             sx={{ flex: 1, fontWeight: "bold" }}
             noWrap
           >
-            {request.name}
+            {request.name}: {request.url}
           </Typography>
           <IconButton
             size="small"
