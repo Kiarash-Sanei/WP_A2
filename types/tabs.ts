@@ -20,3 +20,19 @@ export type Tab = {
   body: string;
   response: Response | null;
 };
+
+export type SavedRequest = {
+  id: string;
+  name: string;
+  url: string;
+  method: string;
+  params: KeyValue[];
+  headers: KeyValue[];
+  body: string;
+};
+
+export type Collection = {
+  id: string;
+  name: string;
+  requests: SavedRequest[];
+};
