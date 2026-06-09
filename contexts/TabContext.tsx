@@ -1,5 +1,5 @@
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-import { Tab } from "@/types/tabs";
+import { SavedRequest, Tab } from "@/types/tabs";
 import { createContext, useCallback, useContext, useEffect } from "react";
 
 type TabContextType = {
@@ -10,6 +10,7 @@ type TabContextType = {
   setActiveTab: (id: string) => void;
   updateTab: (id: string, updates: Partial<Tab>) => void;
   clearTab: (id: string) => void;
+  openRequestInNewTab: (request: SavedRequest) => void;
 };
 
 const TabContext = createContext<TabContextType | null>(null);
@@ -68,6 +69,21 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const openRequestInNewTab = (request: SavedRequest) => {
+    const newTab: Tab = {
+      id: crypto.randomUUID(),
+      name: request.name,
+      url: request.url,
+      method: request.method,
+      params: request.params,
+      headers: request.headers,
+      body: request.body,
+      response: null,
+    };
+    setTabs([...tabs, newTab]);
+    setActiveTabId(newTab.id);
+  };
+
   useEffect(() => {
     if (tabs.length === 0) {
       addTab();
@@ -84,6 +100,7 @@ export function TabProvider({ children }: { children: React.ReactNode }) {
         setActiveTab,
         updateTab,
         clearTab,
+        openRequestInNewTab,
       }}
     >
       {children}

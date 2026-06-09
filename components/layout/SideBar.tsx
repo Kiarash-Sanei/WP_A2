@@ -24,7 +24,6 @@ import {
   FolderOpen,
   History,
 } from "@mui/icons-material";
-import { SavedRequest } from "@/types/tabs";
 
 type SideBarProps = {
   open: boolean;
@@ -41,7 +40,7 @@ export function SideBar({ open, onClose }: SideBarProps) {
     importCollection,
   } = useCollection();
   const { history, clearHistory, deleteFromHistory } = useHistory();
-  const { updateTab, activeTabId } = useTab();
+  const { openRequestInNewTab } = useTab();
   const [newName, setNewName] = useState("");
   const mounted = useHasMounted();
   const isMobile = useMediaQuery("(max-width:600px)");
@@ -116,7 +115,7 @@ export function SideBar({ open, onClose }: SideBarProps) {
             <Stack
               key={request.id}
               direction="row"
-              onClick={() => loadRequest(request)}
+              onClick={() => openRequestInNewTab(request)}
               sx={{
                 pl: 2,
                 cursor: "pointer",
@@ -167,7 +166,7 @@ export function SideBar({ open, onClose }: SideBarProps) {
         <Stack
           key={request.id}
           direction="row"
-          onClick={() => loadRequest(request)}
+          onClick={() => openRequestInNewTab(request)}
           sx={{
             cursor: "pointer",
             borderRadius: 1,
@@ -220,16 +219,6 @@ export function SideBar({ open, onClose }: SideBarProps) {
       </Box>
     </Box>
   );
-
-  const loadRequest = (request: SavedRequest) => {
-    updateTab(activeTabId, {
-      url: request.url,
-      method: request.method,
-      params: request.params,
-      headers: request.headers,
-      body: request.body,
-    });
-  };
 
   if (isMobile) {
     return (
