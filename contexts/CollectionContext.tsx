@@ -106,7 +106,7 @@ export function CollectionProvider({
 export function useCollection() {
   const context = useContext(CollectionContext);
   if (!context) {
-    throw new Error("useTab must be used within a CollectionProvider");
+    throw new Error("useCollection must be used within a CollectionProvider");
   }
   return context;
 }

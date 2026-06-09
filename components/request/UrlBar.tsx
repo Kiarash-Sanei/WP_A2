@@ -4,12 +4,14 @@ import { METHODS } from "@/constants/methods";
 import { useTab } from "@/contexts/TabContext";
 import { useState } from "react";
 import { LoadingSpinner } from "../ui/LoadingSpinner";
+import { useHistory } from "@/contexts/HistoryContext";
 
 export function UrlBar() {
   const { tabs, activeTabId, updateTab, clearTab } = useTab();
   const activeTab = tabs.find((tab) => tab.id === activeTabId);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { addToHistory } = useHistory();
 
   const isValidUrl = (url: string): boolean => {
     return url.startsWith("http://") || url.startsWith("https://");
@@ -41,6 +43,15 @@ export function UrlBar() {
       const body = await response.text();
       updateTab(activeTabId, {
         response: { status: response.status, body: body },
+      });
+      addToHistory({
+        id: crypto.randomUUID(),
+        name: activeTab.url,
+        url: activeTab.url,
+        method: activeTab.method,
+        params: activeTab.params,
+        headers: activeTab.headers,
+        body: activeTab.body,
       });
     } catch (error) {
       setError(
